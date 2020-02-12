@@ -6,16 +6,47 @@
 #   make all returned values from functions go in $v0
 
 .data
-	# TODO: Write your initializations here
+
+array: .word 1 2 3 4 5 6 7 8 9 10
+length: .word 10
+str1: .asciiz "The contents of the array are:\n"
+nl: .asciiz "\n"
+
 
 .text
 printA:
-    # TODO: Write your function code here
+	la $s2, ($a0) # saves address of array
+	lw $s3, 0($a1) # saves value of length
+	li $s4, 1 # increment
+loop:
+
+	# print
+	lw $t0, 0($s2)
+	li $v0, 1
+    move $a0, $t0
+    syscall
+	li $v0, 4
+    la $a0, nl
+    syscall
+
+
+	#break loop if length
+	beq $s3, $s4, exit_loop
+	addiu $s4, $s4, 1 
+
+	# increment pointer by 1
+	addiu $s2, $s2, 4
+	j loop
+
+exit_loop: 
+	jr $ra
 
 main:
-
-	# TODO: Write your main function code here
+	la $a0, array
+	la $a1, length 
+	jal printA 
 
 exit:
-	# TODO: Write code to properly exit a SPIM simulation
+	li $v0, 10
+	syscall
 
