@@ -13,7 +13,7 @@ conv:
 	li $t4, 3 
 loop:
 	beq $t0, $t1, exit_loop
-	slt $t2, $a0, 1
+	sll $t2, $a0, 1
 	sub $t3, $t2 $a1
 	add $v0, $v0, $t3 
 
@@ -23,6 +23,7 @@ loop:
 smaller:
 	addi $a0, $a0, 1
 	addi $t0, $t0, 1
+
 	j loop
 
 exit_loop:
