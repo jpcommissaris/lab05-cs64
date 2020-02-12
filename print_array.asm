@@ -16,7 +16,7 @@ nl: .asciiz "\n"
 .text
 printA:
 	la $s2, ($a0) # saves address of array
-	lw $s3, 0($a1) # saves value of length
+	move $s3, $a1 # saves value of length
 	li $s4, 1 # increment
 loop:
 
@@ -42,8 +42,13 @@ exit_loop:
 	jr $ra
 
 main:
+	li $v0, 4
+	la $a0, str1
+	syscall
+
 	la $a0, array
-	la $a1, length 
+	la $t1, length
+	lw $a1, 0($t1)
 	jal printA 
 
 exit:
