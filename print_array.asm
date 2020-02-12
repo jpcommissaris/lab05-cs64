@@ -7,7 +7,7 @@
 
 .data
 
-array: .word 1 2 3 4 5 6 7 8 9 10
+array1: .word 1 2 3 4 5 6 7 8 9 10
 length: .word 10
 str1: .asciiz "The contents of the array are:\n"
 nl: .asciiz "\n"
@@ -15,10 +15,14 @@ nl: .asciiz "\n"
 
 .text
 printA:
-	la $s2, ($a0) # saves address of array
+	la $s2, 0($a0) # saves address of array
 	move $s3, $a1 # saves value of length
-	li $s4, 1 # increment
+	li $s4, 0 # increment
 loop:
+
+	#break loop if length
+	beq $s3, $s4, exit_loop
+	addiu $s4, $s4, 1 
 
 	# print
 	lw $t0, 0($s2)
@@ -28,11 +32,6 @@ loop:
 	li $v0, 4
     la $a0, nl
     syscall
-
-
-	#break loop if length
-	beq $s3, $s4, exit_loop
-	addiu $s4, $s4, 1 
 
 	# increment pointer by 1
 	addiu $s2, $s2, 4
@@ -46,7 +45,7 @@ main:
 	la $a0, str1
 	syscall
 
-	la $a0, array
+	la $a0, array1
 	la $t1, length
 	lw $a1, 0($t1)
 	jal printA 
